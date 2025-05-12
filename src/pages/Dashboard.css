@@ -1,0 +1,54 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #e6f0ff; /* light blue background */
+}
+
+.dashboard-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0;
+  padding: 40px 40px; /* padding on sides and top */
+  /* background-color: #ffffff; */
+  border-radius: 0 12px 12px 0;
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-container h2 {
+  color: #003366;
+  margin-bottom: 20px;
+}
+
+.user-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.user-card {
+  background-color: #f9f9f9;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.user-card p {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.user-card button {
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin-right: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.user-card button:hover {
+  background-color: #004c99;
+}

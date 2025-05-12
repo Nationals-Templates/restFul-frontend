@@ -1,0 +1,24 @@
+.user-card {
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .user-card p {
+    margin: 0 0 10px 0;
+  }
+  
+  .user-card input {
+    margin-bottom: 10px;
+    padding: 5px;
+    font-size: 14px;
+  }
+  
+  .user-card button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
