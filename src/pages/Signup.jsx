@@ -63,59 +63,61 @@ function Signup() {
   return (
     <div className='auth-page'>
       <h1 className='main-heading'>Welcome to the Parking Registration System</h1>
-      <div className="auth-container">
-        <h2>Sign Up</h2>
-        {error && <p className="error-message">{error}</p>}
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            disabled={loading}
-          />
-          
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            disabled={loading}
-          />
-          
-          <input
-            type="tel"
-            name="phone"
-            placeholder="Phone Number"
-            value={formData.phone}
-            onChange={handleChange}
-            required
-            disabled={loading}
-          />
-          
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            disabled={loading}
-          />
+      <div className="auth-center">
+        <div className="auth-container">
+          <h2>Sign Up</h2>
+          {error && <p className="error-message">{error}</p>}
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              disabled={loading}
+            />
+            
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              disabled={loading}
+            />
+            
+            <input
+              type="tel"
+              name="phone"
+              placeholder="Phone Number"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+              disabled={loading}
+            />
+            
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              disabled={loading}
+            />
 
-          <button type="submit" disabled={loading}>
-            {loading ? 'Registering...' : 'Register'}
-          </button>
-        </form>
-        
-        <p className='switch-auth'>
-          Already have an account?{' '}
-          <a href="/login" onClick={handleRedirect}>Login</a>
-        </p>
+            <button type="submit" disabled={loading}>
+              {loading ? 'Registering...' : 'Register'}
+            </button>
+          </form>
+          
+          <p className='switch-auth'>
+            Already have an account?{' '}
+            <a href="/login" onClick={handleRedirect}>Login</a>
+          </p>
+        </div>
       </div>
     </div>
   );
