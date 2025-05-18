@@ -1,24 +1,55 @@
 .user-card {
-    background-color: #ffffff;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .user-card p {
-    margin: 0 0 10px 0;
-  }
-  
-  .user-card input {
-    margin-bottom: 10px;
-    padding: 5px;
-    font-size: 14px;
-  }
-  
-  .user-card button {
-    margin-right: 5px;
-    padding: 5px 10px;
-    font-size: 14px;
-    cursor: pointer;
-  }
-  
+  background-color: #e6f0ff;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: flex-start;
+  gap: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 90%;
+}
+
+.user-card p {
+  margin: 0;
+  font-weight: bold;
+  font-size: 16px;
+  color: #003366;
+}
+
+.user-card input[type="email"] {
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.card-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.card-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.card-buttons button.edit {
+  background-color: #66cc66;
+  color: white;
+}
+
+.card-buttons button.delete {
+  background-color: #ff3333;
+  color: white;
+}
+
+.card-buttons button:hover {
+  opacity: 0.9;
+}

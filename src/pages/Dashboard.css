@@ -1,54 +1,102 @@
-body {
-  margin: 0;
+.auth-page {
+  background-color: #dfeaf6;
+  min-height: 100vh;
+  padding: 2rem;
   font-family: Arial, sans-serif;
-  background-color: #e6f0ff; /* light blue background */
+}
+
+.main-heading {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: #333;
 }
 
 .dashboard-container {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.search-input {
+  padding: 10px;
   width: 100%;
-  max-width: 800px;
-  margin: 0;
-  padding: 40px 40px; /* padding on sides and top */
-  /* background-color: #ffffff; */
-  border-radius: 0 12px 12px 0;
-  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
-}
-
-.dashboard-container h2 {
-  color: #003366;
-  margin-bottom: 20px;
-}
-
-.user-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.user-card {
-  background-color: #f9f9f9;
-  padding: 16px;
+  max-width: 900px;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.booking-table {
   width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
 }
 
-.user-card p {
-  margin-bottom: 10px;
-  font-weight: bold;
+.booking-table thead {
+  background-color: #dfeae6;
 }
 
-.user-card button {
-  background-color: #0066cc;
+.booking-table th,
+.booking-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.booking-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.booking-table select {
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+
+/* Pagination Styling */
+.pagination {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  background-color: #4CAF50;
   color: white;
   border: none;
-  padding: 8px 12px;
-  margin-right: 8px;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.3s;
 }
 
-.user-card button:hover {
-  background-color: #004c99;
+.pagination button:hover {
+  background-color: #45a049;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-weight: bold;
 }
