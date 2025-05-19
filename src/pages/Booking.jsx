@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from '../api/axios'; // adjust path if needed
+import axios from '../api/axios'; // Make sure this is correctly pointing to your Axios config
 import './Booking.css';
 
 function Booking() {
@@ -8,11 +8,15 @@ function Booking() {
     email: '',
     phone: '',
     plateNumber: '',
-    date: '',
+    entryTime: '',
+    exitTime: '',
   });
 
   const [message, setMessage] = useState('');
-  const userId = 1; // Replace with actual user ID when using auth
+
+  // Try to get user ID from localStorage (adjust according to your auth logic)
+  const user = JSON.parse(localStorage.getItem('user'));
+  const userId = user?.id;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,24 +25,29 @@ function Booking() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!userId) {
+      alert('You must be logged in to book a parking slot.');
+      return;
+    }
+
     const payload = {
-      fullName: formData.fullName,
-      email: formData.email,
-      phone: formData.phone,
-      plateNumber: formData.plateNumber,
-      bookingDate: new Date(formData.date).toISOString(),
-      userId: userId,
+      ...formData,
+      userId,
     };
 
     try {
-      await axios.post('/booking/createBooking', payload); // baseURL handles the rest
+      const response = await axios.post('/booking/createBooking', payload);
+      const { amount } = response.data;
+
+      alert(`Booking successful! Your parking fee is RWF ${amount}`);
       setMessage('Booking submitted successfully!');
       setFormData({
         fullName: '',
         email: '',
         phone: '',
         plateNumber: '',
-        date: '',
+        entryTime: '',
+        exitTime: '',
       });
     } catch (err) {
       console.error('Booking error:', err.response?.data || err.message);
@@ -83,9 +92,16 @@ function Booking() {
           required
         />
         <input
-          type="date"
-          name="date"
-          value={formData.date}
+          type="time"
+          name="entryTime"
+          value={formData.entryTime}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="time"
+          name="exitTime"
+          value={formData.exitTime}
           onChange={handleChange}
           required
         />

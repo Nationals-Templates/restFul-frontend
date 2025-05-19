@@ -10,9 +10,9 @@ export const getAllUsers = async ()=>{
     }
 }
 
-export const deleteUser = async (id) => {
+export const deleteBooking = async (id) => {
     try {
-        const res = await API.delete(`/user/${id}`)
+        const res = await API.delete(`/booking/delete/${id}`)
         alert('User deleted successfully')
     } catch (error) {
         alert('Failed to delete user')

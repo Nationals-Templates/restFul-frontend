@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import './Dashboard.css';
-import { deleteUser, getAllBookings, updateBooking, getBookingsByPlateNumber } from '../services/dashboard';
+import { getAllBookings, updateBooking, getBookingsByPlateNumber, deleteBooking } from '../services/dashboard';
 
 function Dashboard() {
   const [bookings, setBookings] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const bookingsPerPage =5;
+  const bookingsPerPage = 5;
 
   useEffect(() => {
     getAllBookings().then((data) => setBookings(data));
@@ -16,36 +16,29 @@ function Dashboard() {
     const delayDebounce = setTimeout(async () => {
       if (searchTerm.trim()) {
         const filtered = await getBookingsByPlateNumber(searchTerm);
-        console.log(bookings);
-                
         setBookings(filtered);
       } else {
         const all = await getAllBookings();
         setBookings(all);
       }
     }, 800);
-  
+
     return () => clearTimeout(delayDebounce);
   }, [searchTerm]);
 
   const handleDelete = async (id) => {
-    await deleteUser(id);
+    await deleteBooking(id);
     setBookings(bookings.filter((booking) => booking.id !== id));
   };
 
   const handleUpdate = async (id, updatedStatus) => {
     const updatedBooking = await updateBooking(id, updatedStatus);
-    setBookings(bookings.map((booking) => booking.id === id ? updatedBooking : booking));
+    setBookings(bookings.map((booking) => (booking.id === id ? updatedBooking : booking)));
   };
 
   const filteredBookings = bookings.filter((booking) =>
     booking.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  const handlePlateSearch = async () => {
-    const results = await getBookingsByPlateNumber(searchTerm);
-    setBookings(results);
-  };
 
   // Pagination logic
   const totalPages = Math.ceil(filteredBookings.length / bookingsPerPage);
@@ -66,16 +59,14 @@ function Dashboard() {
         <h2>Booked Slots</h2>
 
         <input
-  type="text"
-  placeholder="Search by plate number..."
-  value={searchTerm}
-  onChange={(e) => {
-    setSearchTerm(e.target.value);
-    // setCurrentPage(1); ← removed since you don't want to reset the page
-  }}
-  className="search-input"
-/>
-
+          type="text"
+          placeholder="Search by plate number..."
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+          }}
+          className="search-input"
+        />
 
         <table className="booking-table">
           <thead>
@@ -83,18 +74,20 @@ function Dashboard() {
               <th>Full Name</th>
               <th>Email</th>
               <th>Plate Number</th>
-              <th>Booking Date</th>
+              <th>Entry Time</th>
+              <th>Exit Time</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {bookings.map((booking) => (
+            {currentBookings.map((booking) => (
               <tr key={booking.id}>
                 <td>{booking.fullName}</td>
                 <td>{booking.email}</td>
                 <td>{booking.plateNumber}</td>
-                <td>{new Date(booking.bookingDate).toLocaleDateString()}</td>
+                <td>{booking.entryTime}</td> {/* Adjust format if needed */}
+                <td>{booking.exitTime}</td>  {/* Adjust format if needed */}
                 <td>
                   <select
                     value={booking.status}
