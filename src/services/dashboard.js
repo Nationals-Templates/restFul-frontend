@@ -1,63 +1,34 @@
-import API from '../api/axios'
+import API from '../api/axios';
 
-export const getAllUsers = async ()=>{
-    try {
-        const res = await API.get('/user')
-        return res.data
-        
-    } catch (error) {
-        alert('Failed to fetch users')
-    }
+// Get all bookings with nested user and parking info
+export async function getAllBookings() {
+  try {
+    const response = await API.get('/bookings'); // your backend returns bookings with user and parking info
+    return response.data; // [{ id, user: {name, email}, plateNumber, parkingName, status, exited }]
+  } catch (error) {
+    console.error('Failed to fetch bookings:', error);
+    return [];
+  }
 }
 
-export const deleteBooking = async (id) => {
-    try {
-        const res = await API.delete(`/booking/delete/${id}`)
-        alert('User deleted successfully')
-    } catch (error) {
-        alert('Failed to delete user')
-    }
+// Search bookings by plateNumber (with nested user and parking info)
+export async function getBookingsByPlateNumber(plateNumber) {
+  try {
+    const response = await API.get(`/bookings?plateNumber=${plateNumber}`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch bookings by plate number:', error);
+    return [];
+  }
 }
 
-export const updateUser = async (id, email) =>{
-    try {
-        const res = await API.put(`/user/${id}`, {email})
-        alert('User updated successfully')
-        return res.data 
-    } catch (error) {
-        alert('Unable to update user')
-    }
+// Update booking status, e.g. mark exit status
+export async function updateBooking(id, updatedStatus) {
+  try {
+    const response = await API.patch(`/bookings/${id}`, { status: updatedStatus });
+    return response.data;
+  } catch (error) {
+    console.error(`Failed to update booking status for ${id}:`, error);
+    return null;
+  }
 }
-
-
-export const getAllBookings = async()=>{
-    try{
-        const res = await API.get("/booking/getAllBookings")
-        return res.data
-        // console.log(res.data)
-    } catch(error){
-        alert('Failed to fetch bookings')
-    }
-}
-
-export const updateBooking = async (id, status)=>{
-    try{
-        const res = await API.patch(`/booking/status/${id}`, {status})
-        alert('Booking status updated successfully')
-        return res.data
-    }catch(error){
-        alert('Unable to update booking')
-    }
-}
-
-export const getBookingsByPlateNumber = async (plateNumber) => {
-    try {
-      const res = await API.get(`/booking/search?plateNumber=${plateNumber}`);
-  
-      return res.data;
-    } catch (error) {
-      console.error('Error fetching bookings by plate number:', error);
-      return [];
-    }
-  };
-  

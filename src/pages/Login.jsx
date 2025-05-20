@@ -41,7 +41,7 @@ function Login() {
 
   return (
     <div className='auth-page'>
-      <h1 className="main-heading">Parking Management System</h1>
+      <h1 className="main-heading">XWZ Parking Management System</h1>
       <div className="auth-container">
         <h2>Login</h2>
         {error && <p className="error-message">{error}</p>}

@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import './Dashboard.css';
-import { getAllBookings, updateBooking, getBookingsByPlateNumber, deleteBooking } from '../services/dashboard';
+import {
+  getAllBookings,
+  updateBooking,
+  getBookingsByPlateNumber,
+} from '../services/dashboard';
 
 function Dashboard() {
   const [bookings, setBookings] = useState([]);
@@ -9,7 +13,7 @@ function Dashboard() {
   const bookingsPerPage = 5;
 
   useEffect(() => {
-    getAllBookings().then((data) => setBookings(data));
+    fetchAllBookings();
   }, []);
 
   useEffect(() => {
@@ -17,28 +21,33 @@ function Dashboard() {
       if (searchTerm.trim()) {
         const filtered = await getBookingsByPlateNumber(searchTerm);
         setBookings(filtered);
+        setCurrentPage(1);
       } else {
-        const all = await getAllBookings();
-        setBookings(all);
+        fetchAllBookings();
       }
     }, 800);
 
     return () => clearTimeout(delayDebounce);
   }, [searchTerm]);
 
-  const handleDelete = async (id) => {
-    await deleteBooking(id);
-    setBookings(bookings.filter((booking) => booking.id !== id));
+  const fetchAllBookings = async () => {
+    const all = await getAllBookings();
+    setBookings(all);
   };
 
   const handleUpdate = async (id, updatedStatus) => {
     const updatedBooking = await updateBooking(id, updatedStatus);
-    setBookings(bookings.map((booking) => (booking.id === id ? updatedBooking : booking)));
+    if (updatedBooking) {
+      setBookings(bookings.map((booking) => (booking.id === id ? updatedBooking : booking)));
+    }
   };
 
-  const filteredBookings = bookings.filter((booking) =>
-    booking.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter by email or plate number based on search term (case insensitive)
+  const filteredBookings = bookings.filter((booking) => {
+    const emailMatch = booking.user?.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const plateMatch = booking.plateNumber.toLowerCase().includes(searchTerm.toLowerCase());
+    return emailMatch || plateMatch;
+  });
 
   // Pagination logic
   const totalPages = Math.ceil(filteredBookings.length / bookingsPerPage);
@@ -54,40 +63,36 @@ function Dashboard() {
 
   return (
     <div className='auth-page'>
-      <h1 className='main-heading'>Welcome to the Admin Dashboard</h1>
+      <h1 className='main-heading'>Welcome to the  XWZ Admin Dashboard</h1>
       <div className="dashboard-container">
         <h2>Booked Slots</h2>
 
         <input
           type="text"
-          placeholder="Search by plate number..."
+          placeholder="Search by plate number or email..."
           value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-          }}
+          onChange={(e) => setSearchTerm(e.target.value)}
           className="search-input"
         />
 
         <table className="booking-table">
           <thead>
             <tr>
-              <th>Full Name</th>
-              <th>Email</th>
+              <th>Name</th>
               <th>Plate Number</th>
+              <th>Parking Name</th>
               <th>Entry Time</th>
-              <th>Exit Time</th>
               <th>Status</th>
-              <th>Actions</th>
+              <th>Amount Paid</th>
             </tr>
           </thead>
           <tbody>
             {currentBookings.map((booking) => (
               <tr key={booking.id}>
-                <td>{booking.fullName}</td>
-                <td>{booking.email}</td>
+                <td>{booking.user?.fullName || 'N/A'}</td>
                 <td>{booking.plateNumber}</td>
-                <td>{booking.entryTime}</td> {/* Adjust format if needed */}
-                <td>{booking.exitTime}</td>  {/* Adjust format if needed */}
+                <td>{booking.parking?.parkingName || 'N/A'}</td>
+                <td>{booking.entryTime ? new Date(booking.entryTime).toLocaleString() : 'N/A'}</td>
                 <td>
                   <select
                     value={booking.status}
@@ -96,19 +101,15 @@ function Dashboard() {
                     <option value="pending">pending</option>
                     <option value="accepted">accepted</option>
                     <option value="rejected">rejected</option>
+                    <option value="completed">completed</option>
                   </select>
                 </td>
-                <td>
-                  <button onClick={() => handleDelete(booking.id)} className="delete-btn">
-                    Delete
-                  </button>
-                </td>
+                <td>{booking.amountPaid ? `$${booking.amountPaid.toFixed(2)}` : '$0.00'}</td>
               </tr>
             ))}
           </tbody>
         </table>
 
-        {/* Pagination controls */}
         <div className="pagination">
           <button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>
             Prev

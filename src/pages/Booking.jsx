@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from '../api/axios'; // Make sure this is correctly pointing to your Axios config
+import axios from '../api/axios'; // your configured axios instance
 import './Booking.css';
 
 function Booking() {
@@ -8,15 +8,10 @@ function Booking() {
     email: '',
     phone: '',
     plateNumber: '',
-    entryTime: '',
-    exitTime: '',
+    parkingId: '', // optional, can be empty string or a select input
   });
 
   const [message, setMessage] = useState('');
-
-  // Try to get user ID from localStorage (adjust according to your auth logic)
-  const user = JSON.parse(localStorage.getItem('user'));
-  const userId = user?.id;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,29 +20,32 @@ function Booking() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!userId) {
+    // Make sure user is logged in and token is set in localStorage
+    const token = localStorage.getItem('token');
+    if (!token) {
       alert('You must be logged in to book a parking slot.');
       return;
     }
 
+    // Prepare payload exactly as backend expects, NO entryTime, NO userId
     const payload = {
-      ...formData,
-      userId,
+      fullName: formData.fullName,
+      email: formData.email,
+      phone: formData.phone,
+      plateNumber: formData.plateNumber,
+      parkingId: formData.parkingId ? Number(formData.parkingId) : null,
     };
 
     try {
-      const response = await axios.post('/booking/createBooking', payload);
-      const { amount } = response.data;
-
-      alert(`Booking successful! Your parking fee is RWF ${amount}`);
+      const response = await axios.post('/booking/create', payload);
+      alert('Booking successful!');
       setMessage('Booking submitted successfully!');
       setFormData({
         fullName: '',
         email: '',
         phone: '',
         plateNumber: '',
-        entryTime: '',
-        exitTime: '',
+        parkingId: '',
       });
     } catch (err) {
       console.error('Booking error:', err.response?.data || err.message);
@@ -57,12 +55,12 @@ function Booking() {
 
   return (
     <div className="auth-container">
-      <h2>Book a Parking Slot</h2>
+      <h2>Register in the XWZ parking</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           name="fullName"
-          placeholder="Full Names"
+          placeholder="Full Name"
           value={formData.fullName}
           onChange={handleChange}
           required
@@ -91,21 +89,15 @@ function Booking() {
           onChange={handleChange}
           required
         />
-        <input
-          type="time"
-          name="entryTime"
-          value={formData.entryTime}
+        {/* Optionally add parkingId as select or input if you want */}
+        {/* <input
+          type="number"
+          name="parkingId"
+          placeholder="Parking ID (optional)"
+          value={formData.parkingId}
           onChange={handleChange}
-          required
-        />
-        <input
-          type="time"
-          name="exitTime"
-          value={formData.exitTime}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">Book Now</button>
+        /> */}
+        <button type="submit">Register Now</button>
       </form>
       {message && <p>{message}</p>}
     </div>

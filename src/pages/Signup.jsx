@@ -62,7 +62,7 @@ function Signup() {
 
   return (
     <div className='auth-page'>
-      <h1 className='main-heading'>Welcome to the Parking Registration System</h1>
+      <h1 className='main-heading'>Welcome to XWZ Parking Management System</h1>
       <div className="auth-center">
         <div className="auth-container">
           <h2>Sign Up</h2>
