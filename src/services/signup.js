@@ -7,7 +7,8 @@ export const signup = async (userData) => {
       email: userData.email,
       password: userData.password,
       name: userData.name,
-      phone: userData.phone
+      phone: userData.phone,
+      role: userData.role
     };
 
     const res = await API.post("/auth/register", payload);

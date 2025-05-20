@@ -8,7 +8,8 @@ function Signup() {
     email: '', 
     password: '', 
     name: '', 
-    phone: '' 
+    phone: '',
+    role: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -20,8 +21,7 @@ function Signup() {
     setError(null);
     
     try {
-      // Validate required fields
-      if (!formData.email || !formData.password || !formData.name || !formData.phone) {
+      if (!formData.email || !formData.password || !formData.name || !formData.phone || !formData.role) {
         throw new Error('All fields are required');
       }
 
@@ -29,12 +29,12 @@ function Signup() {
         email: formData.email,
         password: formData.password,
         name: formData.name,
-        phone: formData.phone
+        phone: formData.phone,
+        role: formData.role
       });
       
       if (result?.success) {
         alert(result.message || 'Registration successful! Please verify your email with OTP.');
-        // Redirect to OTP verification page with email in query string
         navigate(`/verify-otp?email=${encodeURIComponent(formData.email)}`);
       } else {
         throw new Error(result?.error || 'Registration failed');
@@ -107,6 +107,18 @@ function Signup() {
               required
               disabled={loading}
             />
+
+            <select
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              required
+              disabled={loading}
+            >
+              <option value="">Select Role</option>
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
 
             <button type="submit" disabled={loading}>
               {loading ? 'Registering...' : 'Register'}
